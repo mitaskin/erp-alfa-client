@@ -51,7 +51,7 @@ function Araclar() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Araçlar
+                  Taşıtlar
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
