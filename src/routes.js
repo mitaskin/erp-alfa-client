@@ -36,8 +36,7 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
+import AnaSayfa from "layouts/anasayfa";
 import CariTablo from "layouts/caritablo";
 import Araclar from "layouts/araclar";
 import Billing from "layouts/billing";
@@ -53,26 +52,10 @@ const routes = [
   {
     type: "collapse",
     name: "Ana Sayfa",
-    key: "dashboard",
+    key: "anasayfa",
     icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
-  {
-    type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
+    route: "/anasayfa",
+    component: <AnaSayfa />,
   },
   {
     type: "collapse",
@@ -86,7 +69,7 @@ const routes = [
     type: "collapse",
     name: "Araçlar",
     key: "araclar",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">local_shipping</Icon>,
     route: "/araclar",
     component: <Araclar />,
   },
