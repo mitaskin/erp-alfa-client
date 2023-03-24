@@ -59,10 +59,10 @@ function Footer({ light }) {
             by
             <Link href="https://www.creative-tim.com/" target="_blank">
               <MDTypography variant="button" fontWeight="medium" color={light ? "white" : "dark"}>
-                &nbsp;Creative Tim&nbsp;
+                &nbsp;mitaskin&nbsp;
               </MDTypography>
             </Link>
-            for a better web.
+            for a better erp-pro.
           </MDBox>
           <MDBox
             component="ul"
@@ -88,7 +88,7 @@ function Footer({ light }) {
                   fontWeight="regular"
                   color={light ? "white" : "dark"}
                 >
-                  Creative Tim
+                  mitaskin
                 </MDTypography>
               </Link>
             </MDBox>
@@ -99,7 +99,7 @@ function Footer({ light }) {
                   fontWeight="regular"
                   color={light ? "white" : "dark"}
                 >
-                  About Us
+                  Hakkımızda
                 </MDTypography>
               </Link>
             </MDBox>
@@ -121,7 +121,7 @@ function Footer({ light }) {
                   fontWeight="regular"
                   color={light ? "white" : "dark"}
                 >
-                  License
+                  Lisans
                 </MDTypography>
               </Link>
             </MDBox>
