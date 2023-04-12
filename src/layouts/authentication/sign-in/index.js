@@ -1,3 +1,7 @@
+/* eslint-disable no-empty */
+/* eslint-disable spaced-comment */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { useState } from "react";
 
 // react-router-dom components
@@ -20,10 +24,27 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
+// Axios
+import axios from "axios";
+
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const handleLogin = async (e) => {
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5001/api/login",{email,password})
+      if(response.status === ""){
+        
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <BasicLayout image={bgImage}>
@@ -51,10 +72,10 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput type="email" label="Email" fullWidth onChange={(e) => { setEmail(e.target.value) }} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Şifre" fullWidth />
+              <MDInput type="password" label="Şifre" fullWidth onChange={(e) => { setPassword(e.target.value) }} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -69,7 +90,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={handleLogin}>
                 Giriş
               </MDButton>
             </MDBox>

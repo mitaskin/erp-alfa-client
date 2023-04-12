@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // react-router components
@@ -110,21 +95,21 @@ function DefaultNavbar({ transparent, light, action }) {
           pl={{ xs: 0, lg: 1 }}
         >
           <MDTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            Material Dashboard 222
+            Erp Alfa
           </MDTypography>
         </MDBox>
         <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
+          <DefaultNavbarLink icon="donut_large" name="Ana Sayfa" route="/dashboard" light={light} />
+          <DefaultNavbarLink icon="person" name="Profil" route="/profile" light={light} />
           <DefaultNavbarLink
             icon="account_circle"
-            name="sign up"
+            name="Kayıt"
             route="/authentication/sign-up"
             light={light}
           />
           <DefaultNavbarLink
             icon="key"
-            name="sign in"
+            name="Giriş"
             route="/authentication/sign-in"
             light={light}
           />
