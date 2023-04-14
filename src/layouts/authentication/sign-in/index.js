@@ -34,13 +34,16 @@ function Basic() {
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (req, res) => {
 
     try {
-      const response = await axios.post("http://127.0.0.1:5001/api/login",{email,password})
-      if(response.status === ""){
-        
-      }
+      await axios.post("http://127.0.0.1:5001/api/login",{email,password}).then((response) => {
+        if(response.data.status === "success"){
+          
+          
+        }
+        // res.redirect("/");
+      })
     } catch (error) {
       console.log(error);
     }
