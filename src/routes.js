@@ -47,6 +47,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import AddRecord from "layouts/kayitekleme/addrecord";
 
 const routes = [
   {
@@ -80,6 +81,14 @@ const routes = [
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/billing",
     component: <Billing />,
+  },
+  {
+    type: "collapse",
+    name: "Kayıt Ekleme",
+    key: "addrecord",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/addrecord",
+    component: <AddRecord />,
   },
   {
     type: "collapse",

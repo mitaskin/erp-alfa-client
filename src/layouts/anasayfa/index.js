@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -19,9 +21,28 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie"; // js-cookie kütüphanesini import ettik
+
 
 function AnaSayfa() {
   const { sales, tasks } = reportsLineChartData;
+
+  const [resData, setresData] = useState("");
+
+  useEffect(() => {
+    const jwtToken = Cookies.get('jwt');
+
+    axios.get("http://127.0.0.1:5001/api/home", { headers: { 'jwt': `${jwtToken}` } })
+      .then((response) => {
+        setresData(response.data.data)
+      })
+      .catch((error) => {
+        console.error("API isteği başarısız oldu:", error);
+      });
+
+  }, []);
 
   return (
     <DashboardLayout>
@@ -32,9 +53,9 @@ function AnaSayfa() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
+                icon="account_balance"
+                title="Toplam Bakiye"
+                count={resData.total_balance === null ? "-" : resData.total_balance}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -46,8 +67,8 @@ function AnaSayfa() {
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Today's Users"
+                icon="currency_lira"
+                title="TL"
                 count="2,300"
                 percentage={{
                   color: "success",
@@ -61,13 +82,13 @@ function AnaSayfa() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
-                icon="store"
-                title="Revenue"
+                icon="attach_money"
+                title="USD"
                 count="34k"
                 percentage={{
                   color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
+                  amount: "",
+                  label: "Güncel Fiyat",
                 }}
               />
             </MDBox>
@@ -76,8 +97,8 @@ function AnaSayfa() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="primary"
-                icon="person_add"
-                title="Followers"
+                icon="euro"
+                title="EURO"
                 count="+91"
                 percentage={{
                   color: "success",

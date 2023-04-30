@@ -62,10 +62,10 @@ export default function data() {
 
     rows: [
       {
-        author: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
-        function: <Job title="Yönetici" description="Lojistik" />,
+        author: <Author image={team2} name="Halil Can DEMİR" email="john@creative-tim.com" />,
+        function: <Job title="Amele" description="Lojistik" />,
         vergi: <Job title="İslahiye V.D." description="456234067" />,
-        yetkili: <Job title="Kerem TUGAY" description="+905319343523" />,
+        yetkili: <Job title="Ferhat DEMİR" description="+905319343523" />,
         budget: (
           <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
             $2,500
@@ -88,7 +88,7 @@ export default function data() {
         ),
       },
       {
-        author: <Author image={team3} name="Alexa Liras" email="alexa@creative-tim.com" />,
+        author: <Author image={team3} name="Ferat DEMİR" email="alexa@creative-tim.com" />,
         function: <Job title="Şoför" description="Lojistik" />,
         vergi: <Job title="İslahiye V.D." description="456234067" />,
         yetkili: <Job title="Kerem TUGAY" description="+905319343523" />,
