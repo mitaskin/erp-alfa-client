@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { Link, useNavigate } from "react-router-dom";
