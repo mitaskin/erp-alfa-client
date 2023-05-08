@@ -1,17 +1,6 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -27,11 +16,32 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie"; // js-cookie kütüphanesini import ettik
+import { Link, useNavigate } from "react-router-dom";
+
 // Data
-import authorsTableData from "layouts/caritablo/data/authorsTableData";
+import authorsTableData from "layouts/caritablo/data/clientsDataTable";
 
 function CariTablo() {
   const { columns, rows } = authorsTableData();
+  const [resData, setresData] = useState("");
+  const history = useNavigate(); // useHistory hook'unu kullanarak history nesnesini elde ettik
+
+  useEffect(() => {
+    const jwtToken = Cookies.get('jwt');
+
+    axios.get("http://127.0.0.1:5001/api/clients", { headers: { 'jwt': `${jwtToken}` } })
+      .then((response) => {
+        console.log(response.data);
+        setresData(response.data)
+      })
+      .catch((error) => {
+        history("/authentication/sign-in") // "/anasayfa" URL'ine yönlendirme yapıyoruz
+      });
+
+  }, []);
 
   return (
     <DashboardLayout>

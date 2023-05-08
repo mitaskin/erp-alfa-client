@@ -7,10 +7,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Autocomplete from '@mui/material/Autocomplete';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
-
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -23,11 +20,10 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-// Data
-import authorsTableData from "layouts/caritablo/data/authorsTableData";
+import { useState } from "react";
+import axios from "axios";
 
 function AddRecord() {
-    const { columns, rows } = authorsTableData();
 
     const cashList = [
         { title: 'Türk Lirası', year: 1994 },
@@ -39,7 +35,20 @@ function AddRecord() {
         options: cashList.map((option) => option.title),
     };
 
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
 
+    const handleSubmit = (event) => {
+        axios.post("http://127.0.0.1:5001/api/transactions", { title, description })
+            .then(response => {
+                console.log(response.data);
+                alert("Form gönderildi.");
+            })
+            .catch(error => {
+                console.log(error);
+                alert("Form gönderirken bir hata oluştu.");
+            });
+    }
 
     return (
         <DashboardLayout>
@@ -74,21 +83,21 @@ function AddRecord() {
                                         <MDInput type="text" label="Açıklama" multiline rows={5} fullWidth />
                                     </MDBox>
                                     <Grid container spacing={3} justifyContent="space-around" mb={2}>
-                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Türk Lirası" fullWidth/></Grid>
-                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Dolarr" fullWidth/></Grid>
-                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Euro" fullWidth/></Grid>
+                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Türk Lirası" fullWidth /></Grid>
+                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Dolarr" fullWidth /></Grid>
+                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Euro" fullWidth /></Grid>
                                     </Grid>
 
                                     <MDBox mb={2}>
-                                    <Autocomplete
-                                        {...flatProps}
-                                        id="para-birimi"
-                                        selectOnFocus
-                                        defaultValue={flatProps.options[0]}
-                                        renderInput={(params) => (
-                                            <TextField {...params} label="Para Birimini Seçiniz" variant="standard" />
-                                        )}
-                                    />
+                                        <Autocomplete
+                                            {...flatProps}
+                                            id="para-birimi"
+                                            selectOnFocus
+                                            defaultValue={flatProps.options[0]}
+                                            renderInput={(params) => (
+                                                <TextField {...params} label="Para Birimini Seçiniz" variant="standard" />
+                                            )}
+                                        />
                                     </MDBox>
 
                                     <MDBox display="flex" alignItems="center" ml={-1}>
@@ -103,7 +112,7 @@ function AddRecord() {
                                         </MDTypography>
                                     </MDBox>
                                     <MDBox mt={4} mb={1}>
-                                        <MDButton variant="gradient" color="info" fullWidth>
+                                        <MDButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
                                             Kaydet
                                         </MDButton>
                                     </MDBox>

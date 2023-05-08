@@ -18,6 +18,8 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
+import MDSnackbar from "components/MDSnackbar";
+
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
@@ -35,26 +37,30 @@ function Basic() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
   const history = useNavigate(); // useHistory hook'unu kullanarak history nesnesini elde ettik
 
+  const [resMessage, setResMessage] = useState("");
+
+  const [successSB, setSuccessSB] = useState(false);
+  const [infoSB, setInfoSB] = useState(false);
+  const [warningSB, setWarningSB] = useState(false);
+  const [errorSB, setErrorSB] = useState(false);
+
+  const openSuccessSB = () => setSuccessSB(true);
+  const closeSuccessSB = () => setSuccessSB(false);
+  const openInfoSB = () => setInfoSB(true);
+  const closeInfoSB = () => setInfoSB(false);
+  const openWarningSB = () => setWarningSB(true);
+  const closeWarningSB = () => setWarningSB(false);
+  const openErrorSB = () => setErrorSB(true);
+  const closeErrorSB = () => setErrorSB(false);
+
   const handleLogin = () => {
-    
 
     // API'ye POST isteği göndererek kullanıcı adı ve şifreyi doğrula
     axios
-      .post("http://127.0.0.1:5001/api/login", { email, password })
+      .post("http://127.0.0.1:5001/api/auth/login", { email, password })
       .then((response) => {
         const jwtToken = response.data.token;
         // API'den gelen token değeri
@@ -62,24 +68,93 @@ function Basic() {
           // Kullanıcı adı ve şifre doğruysa token değeri cookie'lere kaydedilir
           Cookies.set("jwt", jwtToken);
           setLoggedIn(true);
-          setErrorMessage("");
+          setResMessage("");
+          openSuccessSB();
           // Giriş başarılı ise anasayfaya yönlendir
           history("/") // "/anasayfa" URL'ine yönlendirme yapıyoruz
         } else {
           setLoggedIn(false);
-          setErrorMessage("Kullanıcı adı veya şifre hatalı");
+          setResMessage("Kullanıcı adı veya şifre hatalı");
+          openWarningSB();
         }
       })
       .catch((error) => {
         console.error("API isteği başarısız oldu:", error);
         setLoggedIn(false);
-        setErrorMessage("Bir hata oluştu, lütfen tekrar deneyin");
+        if (error.response && (error.response.status === 400 || error.response.status === 409)) {
+          openWarningSB()
+          setResMessage(error.response.data.message)
+        } else if (error.response && error.response.status === 500) {
+          openErrorSB()
+          setResMessage(error.response.data.message)
+        } else {
+          openErrorSB()
+          setResMessage("sistem yöneticisi ile iletişime geçiniz.")
+        }
       });
   };
+
+
+  const renderSuccessSB = (
+    <MDSnackbar
+      color="success"
+      icon="check"
+      title="BAŞARILI"
+      content={resMessage}
+      dateTime="Şimdi"
+      open={successSB}
+      onClose={closeSuccessSB}
+      close={closeSuccessSB}
+      bgWhite
+    />
+  );
+
+  const renderInfoSB = (
+    <MDSnackbar
+      icon="notifications"
+      title="BİLGİ"
+      content={resMessage}
+      dateTime="Şimdi"
+      open={infoSB}
+      onClose={closeInfoSB}
+      close={closeInfoSB}
+    />
+  );
+
+  const renderWarningSB = (
+    <MDSnackbar
+      color="warning"
+      icon="star"
+      title="UYARI"
+      content={resMessage}
+      dateTime="Şimdi"
+      open={warningSB}
+      onClose={closeWarningSB}
+      close={closeWarningSB}
+      bgWhite
+    />
+  );
+
+  const renderErrorSB = (
+    <MDSnackbar
+      color="error"
+      icon="warning"
+      title="HATA"
+      content={resMessage}
+      dateTime="Şimdi"
+      open={errorSB}
+      onClose={closeErrorSB}
+      close={closeErrorSB}
+      bgWhite
+    />
+  );
+
+
 
   return (
     <BasicLayout image={bgImage}>
       <Card>
+        {renderSuccessSB}{renderInfoSB}{renderWarningSB}{renderErrorSB}
         <MDBox
           variant="gradient"
           bgColor="info"
@@ -91,10 +166,9 @@ function Basic() {
           mb={1}
           textAlign="center"
         >
-          {errorMessage && <p>{errorMessage}</p>}
-          {loggedIn && <p>Giriş Başarılı</p>}
+
           <MDTypography variant="h4" fontWeight="small" color="white" mt={1}>
-            Kasa Takip
+            Dendor
           </MDTypography>
           <Grid container spacing={0} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
@@ -104,11 +178,12 @@ function Basic() {
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
+            {loggedIn && <p>Giriş Başarılı</p>}
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth value={email} onChange={handleEmailChange} />
+              <MDInput type="email" label="Email" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Şifre" fullWidth value={password} onChange={handlePasswordChange} />
+              <MDInput type="password" label="Şifre" fullWidth value={password} onChange={(e) => setPassword(e.target.value)} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />

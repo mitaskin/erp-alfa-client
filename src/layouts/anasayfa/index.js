@@ -25,12 +25,15 @@ import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie"; // js-cookie kütüphanesini import ettik
+import { Link, useNavigate } from "react-router-dom";
+
 
 
 function AnaSayfa() {
+  const history = useNavigate(); // useHistory hook'unu kullanarak history nesnesini elde ettik
   const { sales, tasks } = reportsLineChartData;
-
   const [resData, setresData] = useState("");
+
 
   useEffect(() => {
     const jwtToken = Cookies.get('jwt');
@@ -41,6 +44,7 @@ function AnaSayfa() {
       })
       .catch((error) => {
         console.error("API isteği başarısız oldu:", error);
+        history("/authentication/sign-in") // "/anasayfa" URL'ine yönlendirme yapıyoruz
       });
 
   }, []);
