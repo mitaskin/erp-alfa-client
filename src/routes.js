@@ -48,6 +48,7 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import AddRecord from "layouts/kayitekleme/addrecord";
+import Islemler from "layouts/islemler";
 
 const routes = [
   {
@@ -57,6 +58,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/anasayfa",
     component: <AnaSayfa />,
+  },
+  {
+    type: "collapse",
+    name: "İşlemler",
+    key: "islemler",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/islemler",
+    component: <Islemler />,
   },
   {
     type: "collapse",

@@ -2,12 +2,12 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
+
 import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
@@ -22,26 +22,64 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-import { useState } from "react";
+// My Components
+import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+
 
 function AddRecord() {
 
+    // cash listesi için
     const cashList = [
-        { title: 'Türk Lirası', year: 1994 },
-        { title: 'Dolar', year: 1972 },
-        { title: 'Euro', year: 1972 }
+        { title: 'Türk Lirası', value: "try" },
+        { title: 'Dolar', value: "usd" },
+        { title: 'Euro', value: "euro" }
     ]
 
     const flatProps = {
         options: cashList.map((option) => option.title),
     };
 
+    // record type için
+    const recordType = [
+        { title: 'Gelir', value: "income" },
+        { title: 'Gider', value: "expense" },
+    ]
+
+    const recordtypeProps = {
+        options: recordType.map((option) => option.title),
+    };
+
+    // me api isteği için
+    const [resData, setresData] = useState("");
+    const history = useNavigate(); // useHistory hook'unu kullanarak history nesnesini elde ettik
+
+    useEffect(() => {
+        const jwtToken = Cookies.get('jwt');
+
+        axios.get("http://127.0.0.1:5001/api/auth/me", { headers: { 'jwt': `${jwtToken}` } })
+            .then((response) => {
+                setresData(response.data.data)
+                console.log(response.data.data);
+            })
+            .catch((error) => {
+                console.error("API isteği başarısız oldu:", error);
+                history("/authentication/sign-in") // "/anasayfa" URL'ine yönlendirme yapıyoruz
+            });
+
+    }, []);
+
+    // form gönderme için
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [type, setType] = useState("income");
+    const [currency, setCurrency] = useState("try");
+
+    const [amount, setAmount] = useState("");
 
     const handleSubmit = (event) => {
-        axios.post("http://127.0.0.1:5001/api/transactions", { title, description })
+        axios.post("http://127.0.0.1:5001/api/transactions", { title, description, type, amount, currency, user: resData })
             .then(response => {
                 console.log(response.data);
                 alert("Form gönderildi.");
@@ -79,59 +117,40 @@ function AddRecord() {
                             <MDBox pt={4} pb={3} px={3}>
                                 <MDBox component="form" role="form">
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="Başlık" fullWidth />
+                                        <MDInput type="text" label="Başlık" fullWidth onChange={(e) => setTitle(e.target.value)}
+                                        />
                                     </MDBox>
                                     <MDBox mb={2}>
-                                        <MDInput type="text" label="Açıklama" multiline rows={5} fullWidth />
+                                        <MDInput type="text" label="Açıklama" multiline rows={5} fullWidth onChange={(e) => setDescription(e.target.value)}
+                                        />
                                     </MDBox>
                                     <Grid container spacing={3} justifyContent="space-around" mb={2}>
-                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Türk Lirası" fullWidth /></Grid>
-                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Dolarr" fullWidth /></Grid>
-                                        <Grid item xs={12} lg={4}><MDInput type="Number" label="Euro" fullWidth /></Grid>
-                                    </Grid>
-
-                                    <MDBox mb={2}>
-                                        <Autocomplete
+                                        <Grid item xs={12} lg={3}><Autocomplete
+                                            {...recordtypeProps}
+                                            onChange={(e, newValue) => setType(newValue === "Gelir" ? "income" : "expense")}
+                                            id="gelir-gider"
+                                            selectOnFocus
+                                            defaultValue={recordtypeProps.options[0]}
+                                            renderInput={(params) => (
+                                                <TextField {...params} label="Kayıt Türünü Seçiniz" variant="standard" />
+                                            )}
+                                        /></Grid>
+                                        <Grid item xs={12} lg={6}><MDInput type="Number" label="Miktar" fullWidth onChange={(e) => setAmount(e.target.value)} /></Grid>
+                                        <Grid item xs={12} lg={3}><Autocomplete
                                             {...flatProps}
+                                            onChange={(e) => setCurrency(e.target.value)}
                                             id="para-birimi"
                                             selectOnFocus
                                             defaultValue={flatProps.options[0]}
                                             renderInput={(params) => (
                                                 <TextField {...params} label="Para Birimini Seçiniz" variant="standard" />
                                             )}
-                                        />
-                                    </MDBox>
-
-                                    <MDBox display="flex" alignItems="center" ml={-1}>
-                                        <Switch />
-                                        <MDTypography
-                                            variant="button"
-                                            fontWeight="regular"
-                                            color="text"
-                                            sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                                        >
-                                            &nbsp;&nbsp;Beni Hatırla
-                                        </MDTypography>
-                                    </MDBox>
+                                        /></Grid>
+                                    </Grid>
                                     <MDBox mt={4} mb={1}>
                                         <MDButton variant="gradient" color="info" fullWidth onClick={handleSubmit}>
                                             Kaydet
                                         </MDButton>
-                                    </MDBox>
-                                    <MDBox mt={3} mb={1} textAlign="center">
-                                        <MDTypography variant="button" color="text">
-                                            Yeni Kullanıcı için{" "}
-                                            <MDTypography
-                                                component={Link}
-                                                to="/authentication/sign-up"
-                                                variant="button"
-                                                color="info"
-                                                fontWeight="medium"
-                                                textGradient
-                                            >
-                                                Kayıt Ol
-                                            </MDTypography>
-                                        </MDTypography>
                                     </MDBox>
                                 </MDBox>
                             </MDBox>
