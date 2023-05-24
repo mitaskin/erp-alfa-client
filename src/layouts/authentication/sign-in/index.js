@@ -63,7 +63,7 @@ function Basic() {
 
     // API'ye POST isteği göndererek kullanıcı adı ve şifreyi doğrula
     axios
-      .post(`${apiUrl}/api/auth/login`, { email, password })
+      .post(`http://dendor.mitaskin.com:5001/api/auth/login`, { email, password })
       .then((response) => {
         const jwtToken = response.data.token;
         // API'den gelen token değeri
