@@ -39,7 +39,7 @@ function AnaSayfa() {
   useEffect(() => {
     const jwtToken = Cookies.get('jwt');
 
-    axios.get(`http://dendor.mitaskin.com:5001/api/home`, { headers: { 'jwt': `${jwtToken}` } })
+    axios.get(`${apiUrl}/api/home`, { headers: { 'jwt': `${jwtToken}` } })
       .then((response) => {
         setresData(response.data.data)
       })
