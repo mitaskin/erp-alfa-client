@@ -31,7 +31,10 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 import axios from "axios";
 import Cookies from "js-cookie"; // js-cookie kütüphanesini import ettik
 
+
 function Basic() {
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
@@ -60,7 +63,7 @@ function Basic() {
 
     // API'ye POST isteği göndererek kullanıcı adı ve şifreyi doğrula
     axios
-      .post("http://127.0.0.1:5001/api/auth/login", { email, password })
+      .post(`${apiUrl}/api/auth/login`, { email, password })
       .then((response) => {
         const jwtToken = response.data.token;
         // API'den gelen token değeri

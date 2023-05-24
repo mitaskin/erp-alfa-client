@@ -27,6 +27,7 @@ import axios from "axios";
 import Cookies from "js-cookie"; // js-cookie kütüphanesini import ettik
 import { Link, useNavigate } from "react-router-dom";
 
+const apiUrl = process.env.REACT_APP_API_URL;
 
 
 function AnaSayfa() {
@@ -38,7 +39,7 @@ function AnaSayfa() {
   useEffect(() => {
     const jwtToken = Cookies.get('jwt');
 
-    axios.get("http://127.0.0.1:5001/api/home", { headers: { 'jwt': `${jwtToken}` } })
+    axios.get(`${apiUrl}/api/home`, { headers: { 'jwt': `${jwtToken}` } })
       .then((response) => {
         setresData(response.data.data)
       })
