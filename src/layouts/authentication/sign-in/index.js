@@ -65,7 +65,7 @@ function Basic() {
       .post(`${apiUrl}/api/auth/login`, { email, password })
       .then((response) => {
         const jwtToken = response.data.token;
-        // API'den gelen token değeri
+        // API'den gelen token değeri 
         if (jwtToken) {
           // Kullanıcı adı ve şifre doğruysa token değeri cookie'lere kaydedilir
           Cookies.set("jwt", jwtToken);
