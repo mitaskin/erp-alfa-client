@@ -62,7 +62,7 @@ function Basic() {
   const handleLogin = () => {
     // API'ye POST isteği göndererek kullanıcı adı ve şifreyi doğrula
     axios
-      .post(`${apiUrl}/api/auth/login`, { email, password })
+      .post(`${apiUrl}/api/auth/login`, { email, password, withCredentials: true })
       .then((response) => {
         const jwtToken = response.data.token;
         // API'den gelen token değeri   
