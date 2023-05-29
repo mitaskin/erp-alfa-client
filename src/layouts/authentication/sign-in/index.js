@@ -60,7 +60,7 @@ function Basic() {
   const closeErrorSB = () => setErrorSB(false);
 
   const handleLogin = () => {
-    // API'ye POST isteği göndererek kullanıcı adı ve şifreyi doğrula
+    // API'ye POST isteği göndererek kullanıcı adı ve şifreyi doğrula  
     axios
       .post(`${apiUrl}/api/auth/login`, { email, password, withCredentials: true })
       .then((response) => {
